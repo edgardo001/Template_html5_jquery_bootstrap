@@ -2,20 +2,23 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta content="IE=edge" http-equiv="X-UA-Compatible">
+        <meta content="width=device-width, initial-scale=1" name="viewport">
+        <meta content="" name="description">
+        <meta content="" name="author">
+        <!--<link href="../../favicon.ico" rel="icon">-->
         <title>Titulo</title>	
-
         <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-
     </head>
 
     <body>
 
         <div class="container">
             <h2>Modal Example</h2>
-            
+
             <!-- Trigger the modal with a button -->
-            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+            <!--<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>-->
+            <button id="btnModal">Abrir modal</button>
 
             <!-- Modal -->
             <div class="modal fade" id="myModal" role="dialog">
@@ -43,8 +46,12 @@
         <!--Siempre debe ir Jquery primero q bootstrap-->
         <script src="js/jquery-3.1.0.js"></script>	
         <script src="js/bootstrap.js"></script>        
-        <script type="text/javascript">
-
+        <script type="text/javascript">            
+            $(document).ready(function() {        
+                $('#btnModal').click(function(event){
+                    $('#myModal').modal('show');
+                });          
+            });            
         </script>
 
     </body>
