@@ -19,15 +19,12 @@
             <div class="jumbotron">
                 <h1>Hello, world!</h1>
                 <p id="lblDatos">......</p>
-                <!-- Trigger the modal with a button -->
-                <!--<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>-->
                 <button id="btnModal" class="btn btn-primary">Abrir modal</button>
             </div>
 
             <!-- Modal -->
             <div class="modal fade" id="myModal" role="dialog">
                 <div class="modal-dialog">
-
                     <!-- Modal contenido-->
                     <div class="modal-content">
                         <div class="modal-header">
@@ -52,33 +49,21 @@
                     </div>
                 </div>
             </div>
-
-            <div id="a"></div>
-
         </div>
-
         <!--haca todos los script-->
         <!--Siempre debe ir Jquery primero q bootstrap-->
         <script src="js/jquery-3.1.0.js"></script>	
         <script src="js/bootstrap.js"></script>        
         <script type="text/javascript">  
             $(document).ready(function() { 
-
                 $('#btnModal').click(function(event){
                     clearModal();
                     $('#myModal').modal('show');                
-                });  
-
+                }); 
                 $('#btnGuardar').click(function(event){                    
-                    
-                    //$('#myModal').modal('hide');                    
-
-                    //Añadimos la imagen de carga en el contenedor
-                    
-                    var n= $('#txtNombre').val();
+	            var n= $('#txtNombre').val();
                     var a = $('#txtApellido').val();
-                    var t = $('#txtTelefono').val();	
-
+                    var t = $('#txtTelefono').val();
                     $.ajax({
 			type: "POST",
 			data: {"nombre" : n, "apellido" : a, "telefono" : t},
@@ -92,13 +77,20 @@
                             $('#lblDatos').text(response);
                             clearModal();
                         },
-		        error: function(jqXHR, textStatus){
+		        error: function(jqXHR, textStatus, errorThrown){
 			    //if(textStatus === 'timeout'){alert('Failed from timeout');}
                             $('#imgLoad').hide();
                             $('#myModal').modal('toggle');//Verificar uso    
-			    $('#lblDatos').text("error: " + textStatus + " - "+ jqXHR[0].value);
+			    if (jqXHR.status === 0) {alert('Not connect: Verify Network: ' + textStatus);}
+			    else if (jqXHR.status == 404) {alert('Requested page not found [404]');} 
+ 			    else if (jqXHR.status == 500) {alert('Internal Server Error [500].');}
+			    else if (textStatus === 'parsererror') {alert('Requested JSON parse failed.');}
+			    else if (textStatus === 'timeout') {alert('Time out error.');} 
+			    else if (textStatus === 'abort') {alert('Ajax request aborted.');} 
+			    else {alert('Uncaught Error: ' + jqXHR.responseText);}
     			},
 			timeout: 5000
+			//timeout: 1000//para probar timeout
                     });
 
                     event.preventDefault();
@@ -108,19 +100,6 @@
                     //Limpio las cajas de texto del modal
                     $('.modal-body input').val('');
                 }    
-
-                //Simulacion de carga AJAX
-                function sleep(milliseconds) {
-                    var start = new Date().getTime();
-                    for (var i = 0; i < 1e7; i++) {
-                        if ((new Date().getTime() - start) > milliseconds){
-                            break;
-                        }
-                    }
-                }
-
-
-
             });            
         </script>
 
