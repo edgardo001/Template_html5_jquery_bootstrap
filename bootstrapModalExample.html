@@ -75,18 +75,20 @@
 
                     //Añadimos la imagen de carga en el contenedor
                     $('#imgLoad').show();
+		
+
+                    var n= $('#txtNombre').val();
+                    var a = $('#txtApellido').val();
+                    var t = $('#txtTelefono').val();	
 
                     $.ajax({
-                        url: "http://localhost/php/ajaxSleep.php",
-                        success: function() { 
+			type: "POST",
+			data: {"nombre" : n, "apellido" : a, "telefono" : t},
+                        url: "ajaxSleep.php",
+                        success: function(data) { 
                             $('#imgLoad').hide();
                             $('#myModal').modal('toggle');//Verificar uso                            
-                            var n= $('#txtNombre').val();
-                            var a = $('#txtApellido').val();
-                            var t = $('#txtTelefono').val();    
-                            
-                            
-                            $('#lblDatos').text(n+ " " + a + " " + t);
+                            $('#lblDatos').text(data);
                             clearModal();
                         }
                     });
