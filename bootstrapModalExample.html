@@ -72,15 +72,10 @@
                             $('#imgLoad').show();
                		},
                         success: function(response) { 
-                            $('#imgLoad').hide();
-                            $('#myModal').modal('toggle');//Verificar uso                            
-                            $('#lblDatos').text(response);
-                            clearModal();
+                            $('#lblDatos').text(response);                           
                         },
 		        error: function(jqXHR, textStatus, errorThrown){
-			    //if(textStatus === 'timeout'){alert('Failed from timeout');}
-                            $('#imgLoad').hide();
-                            $('#myModal').modal('toggle');//Verificar uso    
+			    //if(textStatus === 'timeout'){alert('Failed from timeout');}   
 			    if (jqXHR.status === 0) {alert('Not connect: Verify Network: ' + textStatus);}
 			    else if (jqXHR.status == 404) {alert('Requested page not found [404]');} 
  			    else if (jqXHR.status == 500) {alert('Internal Server Error [500].');}
@@ -91,6 +86,10 @@
     			},
 			timeout: 5000
 			//timeout: 1000//para probar timeout
+                    }).always(function(){
+		    	    $('#imgLoad').hide();
+                            $('#myModal').modal('toggle');//Verificar uso 
+			    clearModal();
                     });
 
                     event.preventDefault();
