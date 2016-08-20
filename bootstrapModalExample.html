@@ -74,9 +74,7 @@
                     //$('#myModal').modal('hide');                    
 
                     //Añadimos la imagen de carga en el contenedor
-                    $('#imgLoad').show();
-		
-
+                    
                     var n= $('#txtNombre').val();
                     var a = $('#txtApellido').val();
                     var t = $('#txtTelefono').val();	
@@ -85,12 +83,22 @@
 			type: "POST",
 			data: {"nombre" : n, "apellido" : a, "telefono" : t},
                         url: "ajaxSleep.php",
-                        success: function(data) { 
+			beforeSend: function () {
+                            $('#imgLoad').show();
+               		},
+                        success: function(response) { 
                             $('#imgLoad').hide();
                             $('#myModal').modal('toggle');//Verificar uso                            
-                            $('#lblDatos').text(data);
+                            $('#lblDatos').text(response);
                             clearModal();
-                        }
+                        },
+		        error: function(jqXHR, textStatus){
+			    //if(textStatus === 'timeout'){alert('Failed from timeout');}
+                            $('#imgLoad').hide();
+                            $('#myModal').modal('toggle');//Verificar uso    
+			    $('#lblDatos').text("error: " + textStatus + " - "+ jqXHR[0].value);
+    			},
+			timeout: 5000
                     });
 
                     event.preventDefault();
