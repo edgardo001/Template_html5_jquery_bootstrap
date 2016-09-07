@@ -23,7 +23,8 @@
             </div>
 
             <!-- Modal -->
-            <div class="modal fade" id="myModal" role="dialog">
+            <!-- Si las siguientes lineas 'data-backdrop="static" data-keyboard="false"' no estan, el modal se cerrara al precionar fuera-->
+            <div class="modal fade" id="myModal" role="dialog" data-backdrop="static" data-keyboard="false">
                 <div class="modal-dialog">
                     <!-- Modal contenido-->
                     <div class="modal-content">
@@ -61,35 +62,37 @@
                     $('#myModal').modal('show');                
                 }); 
                 $('#btnGuardar').click(function(event){                    
-	            var n= $('#txtNombre').val();
+                    var n= $('#txtNombre').val();
                     var a = $('#txtApellido').val();
                     var t = $('#txtTelefono').val();
                     $.ajax({
-			type: "POST",
-			data: {"nombre" : n, "apellido" : a, "telefono" : t},
+                        type: "POST",
+                        data: {"nombre" : n, "apellido" : a, "telefono" : t},
                         url: "ajaxSleep.php",
-			beforeSend: function () {
+                        beforeSend: function () {
+                            $('button').attr("disabled", true);
                             $('#imgLoad').show();
-               		},
+                        },
                         success: function(response) { 
                             $('#lblDatos').text(response);                           
                         },
-		        error: function(jqXHR, textStatus, errorThrown){
-			    //if(textStatus === 'timeout'){alert('Failed from timeout');}   
-			    if (jqXHR.status === 0) {alert('Not connect: Verify Network: ' + textStatus);}
-			    else if (jqXHR.status == 404) {alert('Requested page not found [404]');} 
- 			    else if (jqXHR.status == 500) {alert('Internal Server Error [500].');}
-			    else if (textStatus === 'parsererror') {alert('Requested JSON parse failed.');}
-			    else if (textStatus === 'timeout') {alert('Time out error.');} 
-			    else if (textStatus === 'abort') {alert('Ajax request aborted.');} 
-			    else {alert('Uncaught Error: ' + jqXHR.responseText);}
-    			},
-			timeout: 5000
-			//timeout: 1000//para probar timeout
+                        error: function(jqXHR, textStatus, errorThrown){
+                            //if(textStatus === 'timeout'){alert('Failed from timeout');}   
+                            if (jqXHR.status === 0) {alert('Not connect: Verify Network: ' + textStatus);}
+                            else if (jqXHR.status == 404) {alert('Requested page not found [404]');} 
+                            else if (jqXHR.status == 500) {alert('Internal Server Error [500].');}
+                            else if (textStatus === 'parsererror') {alert('Requested JSON parse failed.');}
+                            else if (textStatus === 'timeout') {alert('Time out error.');} 
+                            else if (textStatus === 'abort') {alert('Ajax request aborted.');} 
+                            else {alert('Uncaught Error: ' + jqXHR.responseText);}
+                        },
+                        timeout: 5000
+                        //timeout: 1000//para probar timeout
                     }).always(function(){
-		    	    $('#imgLoad').hide();
-                            $('#myModal').modal('toggle');//Verificar uso 
-			    clearModal();
+                        $('button').attr("disabled", false);
+                        $('#imgLoad').hide();
+                        $('#myModal').modal('toggle');//Verificar uso 
+                        clearModal();
                     });
 
                     event.preventDefault();
